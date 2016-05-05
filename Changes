@@ -1,0 +1,6 @@
+Revision history for Perl extension fork::hook.
+
+0.01  Thu May  5 19:56:27 2016
+	- original version; created by h2xs 1.23 with options
+		-An fork::hook
+
