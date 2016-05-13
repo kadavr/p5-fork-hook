@@ -32,7 +32,7 @@ void find_and_exec(pTHX)
                         LEAVE;
                     }
                 }
-                else if (SvTYPE(svi) >= SVt_PVHV) {
+                else if (SvTYPE(svi) == SVt_PVHV) {
                     if (HvNAME((HV*)svi)) {
                         method = gv_fetchmethod_autoload((HV*)svi, "AFTER_FORK", 0);
                         if (method) {
