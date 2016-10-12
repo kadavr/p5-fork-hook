@@ -1,26 +1,30 @@
-# Before 'make install' is performed this script should be runnable with
-# 'make test'. After 'make install' it should work as 'perl fork-hook.t'
-
-#########################
-
-# change 'tests => 1' to 'tests => last_test_to_print';
-
 use strict;
 use warnings;
 
-# use Test::More tests => 1;
-# BEGIN { use_ok('fork::hook') };
+use Test::More;
+
+use fork::hook;
+
 my $a = bless {}, 'TEST';
-fork;
+
+my $parent_pid = $$;
+
+unless(fork){
+	Test::More::done_testing(4);
+}
 
 package TEST;
+use Test::More;
 
 sub AFTER_FORK {
-	warn "AFTER_FORK ok!";
+	isnt($parent_pid, $$, 'AFTER_FORK called in child process');
+	is($_[0], undef,'AFTER_FORK, first element is undefined ref');
 }
 
 sub AFTER_FORK_OBJ {
-	warn "AFTER_FORK_OBJ ok!";
+	my $self = $_[0];
+	isnt($parent_pid, $$, 'AFTER_FORK_OBJ called in child process');
+	is(ref $self, 'TEST','AFTER_FORK_OBJ, first element is blessed ref');
 }
 
 

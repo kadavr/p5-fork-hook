@@ -4,59 +4,52 @@ use 5.010001;
 use strict;
 use warnings;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 require XSLoader;
 XSLoader::load('fork::hook', $VERSION);
 
 1;
 __END__
+=encoding UTF-8
 
 =head1 NAME
 
-fork::hook - Perl extension for blah blah blah
+fork::hook - implements functions that called after fork, in child process.
+
+fork::hook - отпределяет функции, которые будут вызваны после форка в дочерних процессах.
 
 =head1 SYNOPSIS
+  
+  package Test;
 
+  sub AFTER_FORK { warn "Hello World!" }  # <<< Function executed after call 'fork'
+
+  package main;
   use fork::hook;
-  blah blah blah
+  fork;
+
+or
+
+  package Test;
+
+  sub AFTER_FORK_OBJ { warn "Hello World! " . shift }; # <<< Function executed after call 'fork', for each object
+
+  package main;
+  use fork::hook;
+  my $a = bless {}, 'Test';
+  fork;
 
 =head1 DESCRIPTION
 
-Stub documentation for fork::hook, created by h2xs. It looks like the
-author of the extension was negligent enough to leave the stub
-unedited.
-
-Blah blah blah.
-
-=head2 EXPORT
-
-None by default.
-
-
-
-=head1 SEE ALSO
-
-Mention other useful documentation such as the documentation of
-related modules or operating system documentation (such as man pages
-in UNIX), or any relevant external documentation such as RFCs or
-standards.
-
-If you have a mailing list set up for your module, mention it here.
-
-If you have a web site set up for your module, mention it here.
+fork::hook replace origin PL_ppaddr[OP_FORK] on my own fork handler.
+In 'handler', i iterate over perl arena, and call AFTER_FORK for packages stash, or AFTER_FORK_OBJ blessed ref. 
 
 =head1 AUTHOR
 
-vansevich, E<lt>vansevich@localdomainE<gt>
+Evgeniy Vansevich, E<lt>hammer@cpan.orgE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2016 by vansevich
-
-This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself, either Perl version 5.22.1 or,
-at your option, any later version of Perl 5 you may have available.
-
-
+Copyright (C) 2016 by Evgeniy Vnasevich
 =cut

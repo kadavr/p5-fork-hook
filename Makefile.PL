@@ -5,12 +5,26 @@ use ExtUtils::MakeMaker;
 WriteMakefile(
     NAME              => 'fork::hook',
     VERSION_FROM      => 'lib/fork/hook.pm', # finds $VERSION, requires EU::MM from perl >= 5.5
-    PREREQ_PM         => {}, # e.g., Module::Name => 1.1
+    PREREQ_PM         => {},
     ABSTRACT_FROM     => 'lib/fork/hook.pm', # retrieve abstract from module
-    AUTHOR            => 'vansevich <vansevich@localdomain>',
-    #LICENSE           => 'perl',
-    #Value must be from legacy list of licenses here
-    #http://search.cpan.org/perldoc?Module%3A%3ABuild%3A%3AAPI
+    AUTHOR            => 'Evgeniy Vansevich <hammer@cpan.org>',
+    LICENSE           => 'MIT',
+    META_MERGE   => {
+        dynamic_config => 0,
+        'meta-spec'    => {version => 2},
+        no_index       => {directory => ['t']},
+        prereqs        => {runtime => {requires => {perl => '5.010001'}}},
+        resources      => {
+            bugtracker    => {web => 'https://github.com/kadavr/p5-fork-hook/issues'},
+            license       => ['https://opensource.org/licenses/MIT'],
+            repository    => {
+                type => 'git',
+                url  => 'https://github.com/kadavr/p5-fork-hook.git',
+                web  => 'https://github.com/kadavr/p5-fork-hook',
+            },
+        },
+    },
+
     LIBS              => [''], # e.g., '-lm'
     DEFINE            => '', # e.g., '-DHAVE_SOMETHING'
     INC               => '-I.', # e.g., '-I. -I/usr/include/other'
